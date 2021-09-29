@@ -3,7 +3,6 @@ using FeedbackService.Business.Models;
 using FeedbackService.Infrastructure.MongoDB.Implementation;
 using MongoDB.Driver;
 using NUnit.Framework;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,12 +19,12 @@ namespace FeedbackService.Infrastructure.Tests
         }
 
         [Test]
-        public void ShouldCreateFeedback()
+        public async Task ShouldCreateFeedback()
         {
             //Arrange
             var feedback = new Feedback(3, "comment", "session", "user");
             //Act
-            feedbackRepository.CreateFeedback(feedback);
+            await feedbackRepository.CreateFeedback(feedback);
             var result = feedbackCollection.Find(f => f.SessionId == "session" && f.UserId == "user").FirstOrDefault();
             //Assert
             Assert.That(result, Is.Not.Null);
