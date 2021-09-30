@@ -30,32 +30,32 @@ namespace FeedbackService.Infrastructure.MongoDB.Implementation
             catch (MongoWriteException ex)
             {
                 if (ex.WriteError.Category == ServerErrorCategory.DuplicateKey)
-                {
                     throw new Exception("Players can only leave one feedback per session.");
-                }
+                else
+                    throw;
             }
         }
 
         public async Task<List<Feedback>> GetLastFeedback()
         {
-            var feedback = await feedbackCollection
-                .Find(_ => true)
-                .Sort(SortByTimestamp())
-                .Limit(15)
-                .ToListAsync()
-                .ConfigureAwait(false); 
+            var feedback = await FindFeedback(Builders<InfrastructureFeedback>.Filter.Empty);
             return mapper.Map<List<Feedback>>(feedback);
         }
 
         public async Task<List<Feedback>> GetLastFeedbackByRating(int rating)
         {
-            var feedback = await feedbackCollection
-                .Find(f => f.Rating == rating)
+            var feedback = await FindFeedback(Builders<InfrastructureFeedback>.Filter.Eq(f => f.Rating, rating));
+            return mapper.Map<List<Feedback>>(feedback);
+        }
+
+        private async Task<List<InfrastructureFeedback>> FindFeedback(FilterDefinition<InfrastructureFeedback> definition)
+        {
+            return await feedbackCollection
+                .Find(definition)
                 .Sort(SortByTimestamp())
                 .Limit(15)
                 .ToListAsync()
                 .ConfigureAwait(false);
-            return mapper.Map<List<Feedback>>(feedback);
         }
 
         private static SortDefinition<InfrastructureFeedback> SortByTimestamp() 

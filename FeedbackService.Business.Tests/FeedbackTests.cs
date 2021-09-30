@@ -11,8 +11,8 @@ namespace FeedbackService.Business.Tests
         public void FeedbackThrowsExceptionWhenNotCorrect()
         {
             Assert.Throws<ContractException>(() => new Feedback(6, "random", "session1", "user1"));
-            Assert.Throws<ContractException>(() => new Feedback(6, "random", null, "user1"));
-            Assert.Throws<ContractException>(() => new Feedback(6, "random", "session1", null));
+            Assert.Throws<ContractException>(() => new Feedback(5, "random", null, "user1"));
+            Assert.Throws<ContractException>(() => new Feedback(5, "random", "session1", null));
             Assert.Throws<ContractException>(() => new Feedback(0, "random", "session1", "user1"));
         }
     }

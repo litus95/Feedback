@@ -28,7 +28,6 @@ namespace FeedbackService.Business.Models
             Contracts.Require(!string.IsNullOrWhiteSpace(SessionId), "SessionId must be informed");
             Contracts.Require(!string.IsNullOrWhiteSpace(UserId), "UserId must be informed");
             Contracts.Require(Rating >= 1 && Rating <= 5, "Rating must be between 1 and 5.");
-
         }
     }
 }

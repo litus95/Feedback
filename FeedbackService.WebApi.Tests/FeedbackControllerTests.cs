@@ -102,5 +102,24 @@ namespace FeedbackService.WebApi.Tests
             //Assert
             feedbackApplicationServiceMock.Verify(s => s.GetFeedback(1), Times.Once);
         }
+
+        [Test]
+        public async Task ShouldCallGetFeedbackWithNull()
+        {
+            //Arrange
+            var httpContext = new DefaultHttpContext();
+            httpContext.Request.Headers["Ubi-UserId"] = "user1";
+            var controller = new FeedbackController(feedbackApplicationServiceMock.Object)
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = httpContext
+                }
+            };
+            //Act
+            await controller.GetFeedback(null);
+            //Assert
+            feedbackApplicationServiceMock.Verify(s => s.GetFeedback(null), Times.Once);
+        }
     }
 }
